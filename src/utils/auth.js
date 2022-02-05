@@ -11,8 +11,8 @@ export const verifyPassword = async (hash, password) => {
   return await bcrypt.compare(password, hash)
 }
 
-export const generateAccessToken = (id) => {
-  return jwt.sign({ id }, ACCESS_TOKEN_SECRET, {
+export const generateAccessToken = (user) => {
+  return jwt.sign({ user }, ACCESS_TOKEN_SECRET, {
     expiresIn: '2000000s',
   })
 }
@@ -22,6 +22,6 @@ export const verifyAccessToken = async (token) => {
     return
   }
 
-  const { id } = await jwt.verify(token, ACCESS_TOKEN_SECRET)
-  return id
+  const { user } = await jwt.verify(token, ACCESS_TOKEN_SECRET)
+  return user
 }

@@ -1,8 +1,7 @@
 import createError from 'http-errors'
 import shortid from 'shortid'
 import User from '../models/user.model'
-import { generateAccessToken } from '../utils'
-import { sendNewPassword } from '../utils/mail'
+import { generateAccessToken, verifyPassword, sendNewPassword } from '../utils'
 import UserService from './user.service'
 
 class AuthService {
@@ -57,9 +56,8 @@ class AuthService {
       if (user.code !== data.code) {
         throw createError.BadRequest('Code is invalid')
       }
-      
-      return true
 
+      return true
     } catch (error) {
       throw error
     }
@@ -91,10 +89,11 @@ class AuthService {
   }
 
   async changePassword(data) {
-    const { email, password, rePassword } = data
+    const { user, currentPassword, password, rePassword } = data
+    console.log(data);
+
     try {
-      const user = await User.findOne({ email })
-      if (!verifyPassword(user.password, password)) {
+      if (!await verifyPassword(user.password, currentPassword)) {
         throw createError.BadRequest('Current password is invalid')
       }
 
@@ -105,6 +104,7 @@ class AuthService {
       await UserService.update(user._id, { password })
       return true
     } catch (error) {
+      console.log(error);
       throw error
     }
   }

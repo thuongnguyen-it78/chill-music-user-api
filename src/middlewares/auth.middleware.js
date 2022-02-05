@@ -8,22 +8,21 @@ class AuthMiddleware {
   async verifyUser(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-
     try {
       if (token == null) {
         throw createError.Unauthorized('Token is empty')
       }
 
-      const { id } = await verifyAccessToken(token)
-      const user = await User.findById(id)
+      const userToken = await verifyAccessToken(token)
+      const user = await User.findById(userToken._id).select('+password')
+  
       if (!user) {
         throw createError.BadRequest("User doesn't exists")
       }
 
-      if (user.isActive) {
+      if (!user.isActive) {
         throw createError.NotAcceptable("User isn't active")
       }
-
       req.user = user
       next()
     } catch (error) {

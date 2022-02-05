@@ -53,7 +53,7 @@ class AuthController {
 
   async changePassword(req, res, next) {
     try {
-      const data = await AuthService.changePassword(req.body)
+      const data = await AuthService.changePassword({ ...req.body, user: req.user })
       res.status(OK).json({ ...singleResponse, data })
     } catch (error) {
       next(error)
