@@ -2,8 +2,8 @@ import User from '../models/user.model'
 import { toDate, encodePassword } from '../utils'
 
 class UserService {
-  async getAll({ page = 0, limit = 20, q = '' }) {
-    page = Number.parseInt(page)
+  async getAll({ page = 1, limit = 20, q = '' }) {
+    page = Number.parseInt(page) - 1
     limit = Number.parseInt(limit)
     const query = q ? { name: new RegExp(q, 'i') } : {}
     try {
