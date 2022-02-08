@@ -27,6 +27,15 @@ class UserService {
     }
   }
 
+  async count() {
+    try {
+      const data = await User.find({}).count()
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
   async create(data) {
     try {
       data.dateOfBirth = toDate(data.dateOfBirth)

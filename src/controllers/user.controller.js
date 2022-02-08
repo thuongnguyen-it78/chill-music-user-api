@@ -22,6 +22,15 @@ class UserController {
     }
   }
 
+  async count(req, res, next) {
+    try {
+      const data = await UserService.count()
+      res.status(OK).json({ ...singleResponse, data })
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async create(req, res, next) {
     try {
       const data = await UserService.create(req.body)
@@ -30,6 +39,7 @@ class UserController {
       next(error)
     }
   }
+
 
   async update(req, res, next) {
     const id = req.params.id
