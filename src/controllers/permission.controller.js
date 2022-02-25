@@ -1,11 +1,11 @@
 import { OK } from '../constants/httpStatusCode.constant'
 import { pluralResponse, singleResponse } from '../constants/response.constant'
-import UserService from '../services/user.service'
+import PermissionService from '../services/permission.service'
 
-class UserController {
+class PermissionController {
   async getAll(req, res, next) {
     try {
-      const data = await UserService.getAll(req.query)
+      const data = await PermissionService.getAll(req.query)
       return res.status(OK).json({ ...pluralResponse, ...data })
     } catch (error) {
       next(error)
@@ -15,7 +15,17 @@ class UserController {
   async getById(req, res, next) {
     const id = req.params.id
     try {
-      const data = await UserService.getById(id)
+      const data = await PermissionService.getById(id)
+      return res.status(OK).json({ ...singleResponse, data })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getByCode(req, res, next) {
+    const id = req.params.id
+    try {
+      const data = await PermissionService.getByCode(id)
       return res.status(OK).json({ ...singleResponse, data })
     } catch (error) {
       next(error)
@@ -24,7 +34,7 @@ class UserController {
 
   async count(req, res, next) {
     try {
-      const data = await UserService.count()
+      const data = await PermissionService.count()
       res.status(OK).json({ ...singleResponse, data })
     } catch (error) {
       next(error)
@@ -33,7 +43,7 @@ class UserController {
 
   async create(req, res, next) {
     try {
-      const data = await UserService.create(req.body)
+      const data = await PermissionService.create(req.body)
       res.status(OK).json({ ...singleResponse, data })
     } catch (error) {
       next(error)
@@ -44,7 +54,7 @@ class UserController {
   async update(req, res, next) {
     const id = req.params.id
     try {
-      const data = await UserService.update(id, req.body)
+      const data = await PermissionService.update(id, req.body)
       res.status(OK).json({ ...singleResponse, data })
     } catch (error) {
       next(error)
@@ -54,7 +64,7 @@ class UserController {
   async delete(req, res, next) {
     const id = req.params.id
     try {
-      const data = await UserService.delete(id)
+      const data = await PermissionService.delete(id)
       res.status(OK).json({ ...singleResponse, data })
     } catch (error) {
       next(error)
@@ -62,4 +72,4 @@ class UserController {
   }
 }
 
-export default new UserController()
+export default new PermissionController()
