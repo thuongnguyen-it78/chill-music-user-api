@@ -2,11 +2,17 @@ import User from '../models/user.model'
 import { toDate, encodePassword } from '../utils'
 
 class UserService {
-  async getAll({ page = 1, limit = 20, q = '' }) {
+  async getAll({ page = 1, limit = 20, q = '', role, email, isActive, gender }) {
     page = Number.parseInt(page) - 1
     limit = Number.parseInt(limit)
-    const query = q ? { name: new RegExp(q, 'i') } : {}
+    const query = q ? { fullName: new RegExp(q, 'i') } : {}
     try {
+      if (role) query.role = Number(role)
+      if (email) query.email = email.trim()
+      if (isActive) query.isActive = isActive === 'false' ? false : true
+      if (gender) query.gender = Number(gender)
+
+
       const data = await User.find(query)
         .skip(page * limit)
         .limit(limit)
