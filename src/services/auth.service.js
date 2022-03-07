@@ -1,4 +1,5 @@
 import createError from 'http-errors'
+import { use } from 'passport'
 import shortid from 'shortid'
 import User from '../models/user.model'
 import { generateAccessToken, verifyPassword, sendNewPassword } from '../utils'
@@ -7,6 +8,10 @@ import UserService from './user.service'
 class AuthService {
   async logIn(user) {
     try {
+      if(!user.isActive) {
+        throw createError.BadRequest("User is not active")
+      }
+      
       const token = generateAccessToken(user)
       return { token, user }
     } catch (error) {
@@ -42,6 +47,7 @@ class AuthService {
 
       return true
     } catch (error) {
+      console.log(error)
       throw error
     }
   }

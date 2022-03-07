@@ -13,8 +13,8 @@ const transporter = nodemailer.createTransport(smtpTransport({
 export const sendNewPassword = async (to, newPassword) => {
   const info = await transporter.sendMail({
     to: to,
-		subject: 'Your new password',
-    html: `<div>Your new password is: ${newPassword}</div>`,
+		subject: 'Your code to get new password - Chillmusic',
+    html: `<div>Your code is: ${newPassword}</div>`,
   });
 
   return true

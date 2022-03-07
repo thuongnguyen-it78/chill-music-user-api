@@ -16,6 +16,7 @@ class UserService {
       const data = await User.find(query)
         .skip(page * limit)
         .limit(limit)
+        .sort({ createdAt: -1 })
         .lean()
       const count = await User.find(query).count()
       return { data, pagination: { page, limit, count } }
